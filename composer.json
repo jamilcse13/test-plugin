@@ -1,0 +1,17 @@
+{
+    "name": "jamil/test-plugin",
+    "description": "It is an awesome plugin.",
+    "type": "pproject",
+    "license": "GPL",
+    "authors": [
+        {
+            "name": "jamil",
+            "email": "jamil.cse13@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {},
+    "autoload": {
+        "psr-4": {"Inc\\": "./includes"}
+    }
+}
