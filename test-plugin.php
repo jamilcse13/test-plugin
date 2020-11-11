@@ -38,16 +38,33 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+ // if this file is called directly, abort!
 if ( ! defined( 'ABSPATH' ) ) {
     die;
 }
 
+// require once the Composer aitoload
 if ( file_exists( dirname(__FILE__) . '/vendor/autoload.php' ) ) {
     require_once dirname(__FILE__) . '/vendor/autoload.php';
 }
 
-define( 'TP_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
-define( 'TP_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
+/**
+ * the code that runs during plugin activation
+ */
+function activate_test_plugin()
+{
+    Inc\Base\Activate::activate();
+}
+register_activation_hook( __FILE__ , 'activate_test_plugin' );
+
+/**
+ * the code that runs during plugin deactivation
+ */
+function deactivate_test_plugin()
+{
+    Inc\Base\Deactivate::deactivate();
+}
+register_deactivation_hook( __FILE__ , 'deactivate_test_plugin' );
 
 if ( class_exists( 'Inc\\Init' ) ) {
     Inc\Init::register_services();
