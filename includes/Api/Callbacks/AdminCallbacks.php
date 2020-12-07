@@ -30,15 +30,15 @@ class AdminCallbacks extends BaseController
         return require_once( "$this->plugin_path/templates/media.php" );
     }
 
-    public function testOptionsGroup( $input )
-    {
-        return $input;
-    }
+    // public function testOptionsGroup( $input )
+    // {
+    //     return $input;
+    // }
 
-    public function testAdminSection()
-    {
-        echo "Hello from Admin Section";
-    }
+    // public function testAdminSection()
+    // {
+    //     echo "Hello from Admin Section";
+    // }
 
     public function testTextExample()
     {

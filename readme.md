@@ -12,4 +12,5 @@ Full list of sections and features we will build during the series of Tutorials
 * Ajax based Login/Registrattion system
 * Membership protected area
 * Chat system
-* 
+
+practiced from https://github.com/Alecaddd/WordPressPlugin101

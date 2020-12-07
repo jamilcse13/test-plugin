@@ -9,11 +9,13 @@ namespace Inc\Pages;
 use \Inc\Base\BaseController;
 use \Inc\Api\SettingsApi;
 use \Inc\Api\Callbacks\AdminCallbacks;
+use \Inc\Api\Callbacks\ManagerCallbacks;
 
 class Admin extends BaseController
 {
     public $settings;
     public $callbacks;
+    public $callbacks_mngr;
 
     public $pages = array();
     public $subpages = array();
@@ -21,6 +23,7 @@ class Admin extends BaseController
     public function register() {
         $this->settings = new SettingsApi();
         $this->callbacks = new AdminCallbacks();
+        $this->callbacks_mngr = new ManagerCallbacks();
 
         $this->setPages();
         
@@ -78,17 +81,15 @@ class Admin extends BaseController
 
     public function setSettings()
     {
-        $args = array(
-            array(
-                'option_group' => 'test_options_group',
-                'option_name' => 'text_example',
-                'callback' => array( $this->callbacks, 'testOptionsGroup' )
-            ),
-            array(
-                'option_group' => 'first_name',
-                'option_name' => 'text_example',
-            )
-        );
+        $args = array();
+
+        foreach ( $this->managers as $key => $value ) {
+            $args[] = array(
+                'option_group' => 'test_plugin_settings',
+                'option_name' => $key,
+                'callback' => array( $this->callbacks, 'checkboxSanitize' )
+            );
+        }
 
         $this->settings->setSettings( $args );
     }
@@ -99,7 +100,7 @@ class Admin extends BaseController
             array(
                 'id' => 'test_admin_index',
                 'title' => 'Settings',
-                'callback' => array( $this->callbacks, 'testAdminSection' ),
+                'callback' => array( $this->callbacks_mngr, 'adminSectionManager' ),
                 'page' => 'test_plugin'
             )
         );
@@ -109,30 +110,21 @@ class Admin extends BaseController
 
     public function setFields()
     {
-        $args = array(
-            array(
-                'id' => 'text_example',
-                'title' => 'Text Example',
-                'callback' => array( $this->callbacks, 'testTextExample' ),
+        $args = array();
+
+        foreach ( $this->managers as $key => $value ) {
+            $args[] = array(
+                'id' => $key,
+                'title' => $value,
+                'callback' => array( $this->callbacks_mngr, 'checkboxField' ),
                 'page' => 'test_plugin',
                 'section' => 'test_admin_index',
                 'args' => array(
-                    'label_for' => 'text_example',
-                    'class' => 'example-class'
+                    'label_for' => $key,
+                    'class' => 'ui-toggle'
                 )
-                ),
-                array(
-                    'id' => 'first_name',
-                    'title' => 'First Name',
-                    'callback' => array( $this->callbacks, 'testFirstName' ),
-                    'page' => 'test_plugin',
-                    'section' => 'test_admin_index',
-                    'args' => array(
-                        'label_for' => 'first_name',
-                        'class' => 'example-class'
-                    )
-                )
-        );
+            );
+        }
 
         $this->settings->setFields( $args );
     }
